@@ -1,0 +1,27 @@
+<html py:extends="master.xhtml" py:strip="True">
+    <head py:block="head" py:strip="True">
+        <title py:block="master_title">Add a new contact</title>
+    </head>
+
+    <body py:block="body" py:strip="True">
+      <div class="addform" style="width: 50%; margin: auto; text-align: right;">
+        <form action="/addcontact" method="post">
+          <input type="hidden" name="redirectto" value="${tg.url('/')}" />
+            <div>
+              <label for="name">Name:</label>
+              <input type="text" name="name" id="name" value="" />
+            </div>
+            <div>
+              <label for="number">Phone number:</label>
+              <input type="text" name="number" id="number" value="" />
+            </div>
+            <div>
+              <input type="submit" name="submit" value="Add" />
+            </div>
+        </form>
+      </div>
+      <div class="return" style="width: 50%; margin: auto; text-align: center;">
+        Return to the <a href="/">Contacts Page</a>
+      </div>
+    </body>
+</html>

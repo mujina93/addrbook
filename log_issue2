@@ -1,0 +1,1 @@
+python 3.6, dopo i soliti errori dati da pip install -e . , pur avendo setuptools up to date alla 36.7, ho fatto pip uninstall setuptools, poi di nuovo pip install setuptools, e finalmente pip install -e . ha funzionato

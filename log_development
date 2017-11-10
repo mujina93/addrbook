@@ -1,0 +1,15 @@
+creato classe per database Addressbook in model/addressbook.py
+aggiunto questa classe in model/__init__.py
+creare un contatto di prova in websetup/bootstrap.py
+aggiunto from addrbook.model.addressbook import Addressbook all'inizio di controllers/root.py
+inizializzato il db dalla root (addrbook) con 'gearbox setup-app'
+costruito index.xhtml
+aggiunto metodo contactlist() che recupera tutti i contatti dal db
+usato contactlist() nel metodo index per recuperare tutti i contatti e restituirli al template templates/index
+scritto in index.html il codice per stampare la lista di contatti (ricevuta come 'contacts' tramite @expose), e per avere bottone che porta su pagina /add (usando ${tg.url('/add')} per raccogliere l'url della pagina /add
+aggiunto su controllers/root.py il metodo @expose per la pagina 'add'
+messo il form sulla pagina /add che restituisce: la pagina a cui ridirezionare l'utente, il nome inserito, il numero inserito, e il submit del bottone. Questi dati sono catturati dal metodo addcontact() in controllers/root.py, che crea un nuovo contatto e lo aggiunge al db
+modificato il file addressbook.py per mettere non-nullable le colonne di nome e numero
+Rimosso il db con rm -rf devdata.db e inizializzato di nuovo il db con gearbox setup-app
+centrato form e lista di contatti
+

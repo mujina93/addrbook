@@ -1,0 +1,21 @@
+<html py:extends="master.xhtml" py:strip="True">
+    <head py:block="head" py:strip="True">
+        <title py:block="master_title">Address book webapp</title>
+    </head>
+
+    <body py:block="body" py:strip="True">
+      <div class="contacts" style="width: 50%; margin:auto;">
+        <h1>Your contacts</h1>
+        <ul>
+          <li py:for="c in contacts">
+            ${c.name}   ${c.number}
+          </li>
+        </ul>
+      </div>
+
+      <div class="manage" style="width: 50%; margin:auto;">
+        <a href="${tg.url('/add')}"><button>Add contact</button></a>
+      </div>
+
+    </body>
+</html>

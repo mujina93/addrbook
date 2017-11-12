@@ -1,0 +1,84 @@
+<html py:extends="master.xhtml" py:strip="True">
+    <head py:block="head" py:strip="True">
+        <title py:block="master_title">Address book webapp</title>
+        <style type="text/css">
+        .contactslist {
+          width: 60%;
+          margin: auto;
+          background-color: #90AFC5;
+          padding: 4%;
+          border-radius: 10px;
+        }
+        #dbinfo {
+           background-color: #763626;
+           color: #90AFC5;
+           margin-top: 60px;
+           margin-right: 10%;
+           margin-left: 10%;
+           border-radius: 10px;
+           padding: 1%;
+        }
+        </style>
+    </head>
+
+    <body py:block="body" py:strip="True">
+      <div class="contactslist">
+        <h1>Hey ${user}</h1>
+        <h2>Your contacts:</h2>
+        <ul>
+          <li py:for="c in contacts">
+            <h3 style="position: relative;">
+              <span class="name">${c.name}</span> <span class="number">${c.number}</span>
+              <button onclick="confirmDelete(this)" style="color: #B63626; float: right;">Delete</button>
+            </h3>
+          </li>
+        </ul>
+      </div>
+
+      <div class="manage" style="width: 50%; margin: auto; text-align: center;">
+        <h2><a href="${tg.url('/add')}"><button style="margin: 5%;">Add contact</button></a></h2>
+      </div>
+
+      <div id="dbinfo">
+        <h4>Total contacts in your address book: ${partial}</h4>
+        <h4>Total contacts in database: ${total}</h4>
+      </div>
+
+    </body>
+
+    <script>
+    function confirmDelete(requesting){
+        var msg;
+        if(confirm("Are you sure?") == true){
+            msg = "Contact deleted!";
+
+            var number = requesting.previousElementSibling.innerHTML;
+            var name = requesting.previousElementSibling.previousElementSibling.innerHTML;
+            var args = [];
+            args.push(name);
+            args.push(number);
+            var argnames = ['name', 'number'] //these are the names that the controller gets
+
+            var form = document.createElement("form");
+            form.setAttribute("method", "post");
+            form.setAttribute("action", '/deletecontact');
+            var i;
+
+            for(i=0; i &lt; args.length; i++){
+              var hiddenField = document.createElement("input");
+              hiddenField.setAttribute("type", "hidden");
+              hiddenField.setAttribute("name", argnames[i]);
+              hiddenField.setAttribute("value", args[i]);
+              form.appendChild(hiddenField);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }else{
+            msg = "Cancelled";
+        }
+        //document.getElementById("message").innerHTML = msg;
+
+    }
+    </script>
+</html>

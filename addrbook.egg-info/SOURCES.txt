@@ -24,6 +24,7 @@ addrbook/lib/app_globals.py
 addrbook/lib/base.py
 addrbook/lib/helpers.py
 addrbook/model/__init__.py
+addrbook/model/addressbook.py
 addrbook/model/auth.py
 addrbook/public/favicon.ico
 addrbook/public/css/bootstrap.min.css
@@ -38,6 +39,7 @@ addrbook/public/img/under_the_hood_blue.png
 addrbook/public/javascript/bootstrap.min.js
 addrbook/templates/__init__.py
 addrbook/templates/about.xhtml
+addrbook/templates/add.xhtml
 addrbook/templates/data.xhtml
 addrbook/templates/environ.xhtml
 addrbook/templates/error.xhtml

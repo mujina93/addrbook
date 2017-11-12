@@ -1,0 +1,267 @@
+provo a risolvere l'issue a far funzionare bene la separazione dei contatti di ciascun utente
+
+installo nosetests con pip install nose
+provo ad installare distribute (per python3) con pip install distribute. Problema: Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-build-62_3fg_s/distribute/
+installo pystan da addressbook/: pip install pystan
+poi da addressbook/: python3.6 setup.py install 
+ma pip install distribute ancora non funziona
+ho scaricato distribute (zip) e provato a setuppare con python3.6 setup.py install ma incorro nell'errore: AttributeError: module 'importlib._bootstrap' has no attribute 'SourceFileLoader'
+
+provo a runnare nosetests (da addressbook/: nosetests). RUnna 21 tests, 1 errore.
+provo python3.6 setup.py nosetests. Ottengo:
+/-----------------RISULTATI----------------/
+running nosetests
+running egg_info
+writing addrbook.egg-info/PKG-INFO
+writing dependency_links to addrbook.egg-info/dependency_links.txt
+writing entry points to addrbook.egg-info/entry_points.txt
+writing requirements to addrbook.egg-info/requires.txt
+writing top-level names to addrbook.egg-info/top_level.txt
+reading manifest file 'addrbook.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+writing manifest file 'addrbook.egg-info/SOURCES.txt'
+Searching for coverage
+Reading https://pypi.python.org/simple/coverage/
+Downloading https://pypi.python.org/packages/0b/e1/190ef1a264144c9b073b7353c259ca5431b5ddc8861b452e858fcbd0e9de/coverage-4.4.2.tar.gz#md5=29a9fe85377e0f7327cf5db1e335483f
+Best match: coverage 4.4.2
+Processing coverage-4.4.2.tar.gz
+Writing /tmp/easy_install-nx8g_58a/coverage-4.4.2/setup.cfg
+Running coverage-4.4.2/setup.py -q bdist_egg --dist-dir /tmp/easy_install-nx8g_58a/coverage-4.4.2/egg-dist-tmp-zyocamvg
+warning: no previously-included files found matching 'ci/appveyor.token'
+no previously-included directories found matching 'doc/_build'
+no previously-included directories found matching 'tests/eggsrc/build'
+no previously-included directories found matching 'tests/eggsrc/dist'
+no previously-included directories found matching 'tests/eggsrc/*.egg-info'
+warning: no previously-included files matching '*.py[co]' found anywhere in distribution
+In file included from coverage/ctracer/datastack.c:4:0:
+coverage/ctracer/util.h:7:20: fatal error: Python.h: No such file or directory
+compilation terminated.
+**
+** Couldn't install with extension module, trying without it...
+** BuildFailed: command 'x86_64-linux-gnu-gcc' failed with exit status 1
+**
+warning: no previously-included files found matching 'ci/appveyor.token'
+no previously-included directories found matching 'doc/_build'
+no previously-included directories found matching 'tests/eggsrc/build'
+no previously-included directories found matching 'tests/eggsrc/dist'
+no previously-included directories found matching 'tests/eggsrc/*.egg-info'
+warning: no previously-included files matching '*.py[co]' found anywhere in distribution
+creating /home/mujina/prog/Python/addrbook/.eggs/coverage-4.4.2-py3.6.egg
+Extracting coverage-4.4.2-py3.6.egg to /home/mujina/prog/Python/addrbook/.eggs
+
+Installed /home/mujina/prog/Python/addrbook/.eggs/coverage-4.4.2-py3.6.egg
+Wrong password keeps user_name in login form ... ok
+Anonymous users are forced to login ... ok
+Logouts must work correctly ... ok
+Voluntary logins must work correctly ... ok
+The data display demo works with HTML ... ok
+The data display demo works with JSON ... ok
+Displaying the wsgi environ works ... ok
+The front page is working properly ... FAIL
+Anonymous users must not access the secure controller ... ok
+The editor cannot access the secure controller ... ok
+The manager can access the secure controller ... ERROR
+Model objects can be created ... ok
+Model objects can be queried ... ok
+Model objects can be created ... ok
+Model objects can be queried ... ok
+Model objects can be created ... ok
+Users should be fetcheable by their email addresses ... ok
+User objects should have no permission by default. ... ok
+The obj constructor must set the email right ... ok
+The obj constructor must set the user name right ... ok
+Model objects can be queried ... ok
+
+======================================================================
+ERROR: The manager can access the secure controller
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/nose/case.py", line 198, in runTest
+    self.test(*self.arg)
+  File "/home/mujina/prog/Python/addrbook/addrbook/tests/functional/test_root.py", line 59, in test_secc_with_manager
+    resp = self.app.get('/secc', extra_environ=environ, status=200)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/webtest/app.py", line 759, in get
+    expect_errors=expect_errors)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/webtest/app.py", line 1121, in do_request
+    self._check_status(status, res)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/webtest/app.py", line 1160, in _check_status
+    "Bad response: %s (not %s)", res_status, status)
+webtest.app.AppError: Bad response: 500 Internal Server Error (not 200)
+-------------------- >> begin captured stdout << ---------------------
+Running setup_app() from addrbook.websetup
+Creating tables
+Initializing Migrations
+
+--------------------- >> end captured stdout << ----------------------
+-------------------- >> begin captured logging << --------------------
+tg.configuration.app_config: DEBUG: Initializing configuration, package: 'addrbook'
+tg.configuration.milestones: DEBUG: config_ready milestone reached
+tg.configuration.milestones: DEBUG: renderers_ready milestone reached
+tg.configuration.milestones: DEBUG: environment_loaded milestone reached
+tg.appwrappers.i18n: DEBUG: i18n enabled: True -> {'enabled': True, 'lang_session_key': 'tg_lang', 'no_session_touch': False, 'lang': None}
+tg.appwrappers.identity: DEBUG: Identity enabled: True -> {'enabled': True, 'allow_missing_user': False, 'authmetadata': <addrbook.config.app_cfg.ApplicationAuthMetadata object at 0x7fa33e50dcc0>}
+tg.appwrappers.session: DEBUG: Sessions enabled: True -> {'invalidate_corrupt': True, 'type': 'cookie', 'data_dir': '/home/mujina/prog/Python/addrbook/data/sessions', 'key': 'addrbook', 'timeout': None, 'secret': 'f354e2b5-f619-49a7-9960-ce8b35da84c4', 'log_file': None, 'data_serializer': 'json', 'validate_key': 'f354e2b5-f619-49a7-9960-ce8b35da84c4'}
+tg.appwrappers.caching: DEBUG: Caching enabled: True -> {'type': 'memory', 'data_dir': '/home/mujina/prog/Python/addrbook/data/cache', 'expire': None, 'log_file': None}
+tg.appwrappers.mingflush: DEBUG: MingSessionFlush enabled: False -> {'autoflush': False}
+tg.appwrappers.transaction_manager: DEBUG: TransactionManager enabled: True -> {'enabled': True, 'attempts': 1, 'commit_veto': None}
+tg.appwrappers.errorpage: DEBUG: ErrorPageApplicationWrapper enabled: True -> {'enabled': True, 'status_codes': [403, 404], 'handle_exceptions': True, 'path': '/error/document', 'content_types': ['text/html', None]}
+tg.configuration.app_config: DEBUG: Initializing configuration, package: 'addrbook'
+tg.configuration.milestones: DEBUG: config_ready milestone reached
+tg.configuration.milestones: DEBUG: renderers_ready milestone reached
+tg.configuration.milestones: DEBUG: environment_loaded milestone reached
+txn.140339172517632: DEBUG: new transaction
+txn.140339172517632: DEBUG: commit
+alembic.runtime.migration: INFO: Context impl SQLiteImpl.
+alembic.runtime.migration: INFO: Will assume non-transactional DDL.
+txn.140339172517632: DEBUG: new transaction
+txn.140339172517632: DEBUG: commit <zope.sqlalchemy.datamanager.SessionDataManager object at 0x7fa33b128128>
+txn.140339172517632: DEBUG: commit
+auth: INFO: request classification: browser
+auth: INFO: -- repoze.who request started (/secc) --
+auth: DEBUG: identifier plugins registered: [<tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b0ec240>, <FastFormPlugin:/login_handler 140339047219552>, <AuthTktCookiePlugin 140339047222016>]
+auth: DEBUG: identifier plugins matched for classification "browser": [<tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b0ec240>, <FastFormPlugin:/login_handler 140339047219552>, <AuthTktCookiePlugin 140339047222016>]
+auth: DEBUG: identity returned from <tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b0ec240>: {'fake-userid': 'manager'}
+auth: DEBUG: no identity returned from <FastFormPlugin:/login_handler 140339047219552> (None)
+auth: DEBUG: no identity returned from <AuthTktCookiePlugin 140339047222016> (None)
+auth: DEBUG: identities found: [(<tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b0ec240>, {'fake-userid': 'manager'})]
+auth: DEBUG: authenticator plugins registered: [<tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b0ec240>]
+auth: DEBUG: authenticator plugins matched for classification "browser": [<tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b0ec240>]
+auth: DEBUG: userid returned from <tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b0ec240>: "manager"
+auth: DEBUG: identities authenticated: [((0, 0), <tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b0ec240>, <tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b0ec240>, {'repoze.who.userid': 'manager'}, 'manager')]
+tg.appwrappers.transaction_manager: DEBUG: Attempts Left 0 (1 total)
+txn.140339172517632: DEBUG: new transaction
+tg.appwrappers.transaction_manager: DEBUG: Error while running request, aborting transaction
+txn.140339172517632: DEBUG: abort
+tg.appwrappers.errorpage: DEBUG: ErrorPageApplicationWrapper response: /secc -> 500 @ text/html
+tg.appwrappers.errorpage: DEBUG: ErrorPageApplicationWrapper serving <addrbook.controllers.root.RootController object at 0x7fa33b263470>:/error/document
+tg.appwrappers.transaction_manager: DEBUG: Attempts Left 0 (1 total)
+txn.140339172517632: DEBUG: new transaction
+txn.140339172517632: DEBUG: commit <zope.sqlalchemy.datamanager.SessionDataManager object at 0x7fa33b15b9e8>
+txn.140339172517632: DEBUG: commit
+tg.appwrappers.transaction_manager: DEBUG: Transaction committed!
+auth: INFO: no challenge required
+auth: INFO: -- repoze.who request ended (/secc) --
+backlash: DEBUG: Traceback (most recent call last):
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/_compat.py", line 87, in reraise
+    raise value
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/appwrappers/transaction_manager.py", line 79, in __call__
+    response = self.next_handler(controller, environ, context)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/appwrappers/caching.py", line 54, in __call__
+    return self.next_handler(controller, environ, context)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/appwrappers/session.py", line 71, in __call__
+    response = self.next_handler(controller, environ, context)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/appwrappers/identity.py", line 75, in __call__
+    return self.next_handler(controller, environ, context)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/appwrappers/i18n.py", line 71, in __call__
+    return self.next_handler(controller, environ, context)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/wsgiapp.py", line 285, in _dispatch
+    return controller(environ, context)
+  File "/home/mujina/prog/Python/addrbook/addrbook/lib/base.py", line 27, in __call__
+    return TGController.__call__(self, environ, context)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/controllers/dispatcher.py", line 119, in __call__
+    response = self._perform_call(context)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/controllers/dispatcher.py", line 108, in _perform_call
+    r = self._call(action, params, remainder=remainder, context=context)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/controllers/decoratedcontroller.py", line 125, in _call
+    response = self._render_response(context, controller, output)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/controllers/decoratedcontroller.py", line 235, in _render_response
+    template_name=template_name, **render_params)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/render.py", line 208, in render
+    kwargs['result'] = render_function(template_name, tg_vars, **kwargs)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/renderers/kajiki.py", line 98, in __call__
+    cache_expire=cache_expire)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/render.py", line 274, in cached_template
+    return render_func()
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/tg/renderers/kajiki.py", line 94, in render_template
+    return Markup(template(template_vars).render())
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/kajiki/template.py", line 105, in render
+    return ''.join(self)
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/kajiki/template.py", line 100, in __iter__
+    for chunk in self.__main__():
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/kajiki/util.py", line 79, in __iter__
+    for xx in x:
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/kajiki/util.py", line 79, in __iter__
+    for xx in x:
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/kajiki/util.py", line 77, in __iter__
+    for x in self.iterator:
+  File "/home/mujina/prog/Python/addrbook/addrbook/templates/index.xhtml", line 26, in _kj_block_body
+    <h1>Hey ${user}</h1>
+NameError: name 'user' is not defined
+tg.support.middlewares: DEBUG: Removing DBSession from current thread
+--------------------- >> end captured logging << ---------------------
+
+======================================================================
+FAIL: The front page is working properly
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/mujina/prog/Python/tg2py3.6env/lib/python3.6/site-packages/nose/case.py", line 198, in runTest
+    self.test(*self.arg)
+  File "/home/mujina/prog/Python/addrbook/addrbook/tests/functional/test_root.py", line 28, in test_index
+    ok_(msg in response)
+AssertionError: None
+-------------------- >> begin captured stdout << ---------------------
+Running setup_app() from addrbook.websetup
+Creating tables
+Initializing Migrations
+
+--------------------- >> end captured stdout << ----------------------
+>>  raise AssertionError(None)
+    
+-------------------- >> begin captured logging << --------------------
+tg.configuration.app_config: DEBUG: Initializing configuration, package: 'addrbook'
+tg.configuration.milestones: DEBUG: config_ready milestone reached
+tg.configuration.milestones: DEBUG: renderers_ready milestone reached
+tg.configuration.milestones: DEBUG: environment_loaded milestone reached
+tg.appwrappers.i18n: DEBUG: i18n enabled: True -> {'enabled': True, 'lang_session_key': 'tg_lang', 'no_session_touch': False, 'lang': None}
+tg.appwrappers.identity: DEBUG: Identity enabled: True -> {'enabled': True, 'allow_missing_user': False, 'authmetadata': <addrbook.config.app_cfg.ApplicationAuthMetadata object at 0x7fa33e50dcc0>}
+tg.appwrappers.session: DEBUG: Sessions enabled: True -> {'invalidate_corrupt': True, 'type': 'cookie', 'data_dir': '/home/mujina/prog/Python/addrbook/data/sessions', 'key': 'addrbook', 'timeout': None, 'secret': 'f354e2b5-f619-49a7-9960-ce8b35da84c4', 'log_file': None, 'data_serializer': 'json', 'validate_key': 'f354e2b5-f619-49a7-9960-ce8b35da84c4'}
+tg.appwrappers.caching: DEBUG: Caching enabled: True -> {'type': 'memory', 'data_dir': '/home/mujina/prog/Python/addrbook/data/cache', 'expire': None, 'log_file': None}
+tg.appwrappers.mingflush: DEBUG: MingSessionFlush enabled: False -> {'autoflush': False}
+tg.appwrappers.transaction_manager: DEBUG: TransactionManager enabled: True -> {'enabled': True, 'attempts': 1, 'commit_veto': None}
+tg.appwrappers.errorpage: DEBUG: ErrorPageApplicationWrapper enabled: True -> {'enabled': True, 'status_codes': [403, 404], 'handle_exceptions': True, 'path': '/error/document', 'content_types': ['text/html', None]}
+tg.configuration.app_config: DEBUG: Initializing configuration, package: 'addrbook'
+tg.configuration.milestones: DEBUG: config_ready milestone reached
+tg.configuration.milestones: DEBUG: renderers_ready milestone reached
+tg.configuration.milestones: DEBUG: environment_loaded milestone reached
+txn.140339172517632: DEBUG: new transaction
+txn.140339172517632: DEBUG: commit
+alembic.runtime.migration: INFO: Context impl SQLiteImpl.
+alembic.runtime.migration: INFO: Will assume non-transactional DDL.
+txn.140339172517632: DEBUG: new transaction
+txn.140339172517632: DEBUG: commit <zope.sqlalchemy.datamanager.SessionDataManager object at 0x7fa33b192ac8>
+txn.140339172517632: DEBUG: commit
+auth: INFO: request classification: browser
+auth: INFO: -- repoze.who request started (/) --
+auth: DEBUG: identifier plugins registered: [<tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b174780>, <FastFormPlugin:/login_handler 140339047777280>, <AuthTktCookiePlugin 140339048318960>]
+auth: DEBUG: identifier plugins matched for classification "browser": [<tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b174780>, <FastFormPlugin:/login_handler 140339047777280>, <AuthTktCookiePlugin 140339048318960>]
+auth: DEBUG: no identity returned from <tg.configuration.auth.setup._AuthenticationForgerPlugin object at 0x7fa33b174780> (None)
+auth: DEBUG: no identity returned from <FastFormPlugin:/login_handler 140339047777280> (None)
+auth: DEBUG: no identity returned from <AuthTktCookiePlugin 140339048318960> (None)
+auth: DEBUG: identities found: []
+auth: INFO: no identities found, not authenticating
+tg.appwrappers.transaction_manager: DEBUG: Attempts Left 0 (1 total)
+txn.140339172517632: DEBUG: new transaction
+txn.140339172517632: DEBUG: commit <zope.sqlalchemy.datamanager.SessionDataManager object at 0x7fa33b193400>
+txn.140339172517632: DEBUG: commit
+tg.appwrappers.transaction_manager: DEBUG: Transaction committed!
+tg.appwrappers.errorpage: DEBUG: ErrorPageApplicationWrapper response: / -> 200 @ text/html
+auth: INFO: no challenge required
+auth: INFO: -- repoze.who request ended (/) --
+tg.support.middlewares: DEBUG: Removing DBSession from current thread
+--------------------- >> end captured logging << ---------------------
+
+----------------------------------------------------------------------
+Ran 21 tests in 2.048s
+
+FAILED (errors=1, failures=1)
+/-----------------RISULTATI----------------/
+
+Cambiato: # msg = 'TurboGears 2 is rapid web application development toolkit '\
+        #       'designed to make your life easier.'
+        msg = 'Your contacts'
+dentro a tests/test_root.py/test_index, per avere non più l'errore: The front page is working properly ... FAIL
+runnato il test e quell'errore non c'è più.
+Provato a usare il codice per fare streaming response dal db (in controllers/root.py, con pulsante da index.html)
+ORA NON FUNZIONA PIù NULLA. SE MODIFICO IL FILE index.xhtml NON VIENE PIÙ AGGIORNATO IL SITO. I PULSANTI ADD E DELETE FUNZIONANO ANCORA, PERÒ.
+Anche se cancello il file index.xhtml, comunque il sito si carica (con le vecchie impostazioni). Da dove le prende??
+

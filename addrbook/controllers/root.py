@@ -16,6 +16,10 @@ from addrbook.lib.base import BaseController
 from addrbook.controllers.error import ErrorController
 
 from addrbook.model.addressbook import Addressbook
+from addrbook.model import User
+
+from sqlalchemy.orm.exc import *
+from sqlalchemy import func
 
 __all__ = ['RootController']
 
@@ -45,22 +49,75 @@ class RootController(BaseController):
     @expose('addrbook.templates.index')
     def _default(self):
         """Handle the front-page."""
-        contacts = self.contactlist()
-        return dict(page='index', contacts=contacts)
+        (contacts, partial) = self.contactlist()
+        username = ""
+        try:
+            username = request.identity['repoze.who.userid']
+        except:
+            username = ""
+        total = DBSession.query(Addressbook.id).count()
+        return dict(page='index', contacts=contacts, user=username, total=total, partial=partial)
 
     def contactlist(self):
-        return [contact for contact in DBSession.query(Addressbook).order_by(Addressbook.name)]
+        try:
+            username = request.identity['repoze.who.userid']
+            contacts = DBSession.query(Addressbook).filter(Addressbook.users.any(user_name=username))
+            number_of_contacts = contacts.count()
+            return ([contact for contact in contacts.order_by(Addressbook.name)],number_of_contacts)
+        except TypeError:
+            return ([],0)
 
     @expose('addrbook.templates.add')
-    def add(self):
+    def add(self, default_name="", default_number=""):
         """Handle the 'add' page."""
-        return dict(page='add')
+        return dict(page='add', default_name=default_name, default_number=default_number)
 
     @expose()
     def addcontact(self, redirectto, name, number, submit):
-        new_contact = Addressbook(name=name, number=number)
-        DBSession.add(new_contact)
-        redirect("/")
+        if name.strip()=="":
+            flash(_('Name required!'), 'error')
+            redirect('/add', params=dict(default_number=number))
+        elif number.strip()=="":
+            flash(_('Number required!'), 'error')
+            redirect('/add', params=dict(default_name=name))
+        else:
+            try:
+                username = request.identity['repoze.who.userid']
+                new_contact = Addressbook(name=name, number=number)
+                print("""
+                """+str(len(new_contact.users))+"""
+                """)
+                new_contact.users.append(DBSession.query(User).filter_by(user_name=username).one())
+                DBSession.add(new_contact)
+                print("""
+                """+str(len(new_contact.users))+"""
+                """)
+                flash(_('New contact added to '+username))
+            except TypeError:
+                flash(_('No user logged. Login first.'), 'error')
+            redirect("/")
+
+    @expose()
+    def deletecontact(self, name, number):
+        username = request.identity['repoze.who.userid']
+        toBeDeleted = DBSession.query(Addressbook).filter(Addressbook.users.any(user_name=username)).filter(Addressbook.name==name).filter(Addressbook.number==number)
+        toBeDeleted.delete(synchronize_session='fetch')
+
+        flash(_('Contact deleted'))
+        redirect('/')
+
+    # @expose(content_type='application/json')
+    # def stream_db(self):
+    #     def output_pause():
+    #         num = 0
+    #         yield '['
+    #         while num < 9:
+    #             u = DBSession.query(model.User).filter_by(user_id=num).first()
+    #             num += 1
+    #             yield u and '%d, ' % u.user_id or 'null, '
+    #             time.sleep(1)
+    #         yield 'null]'
+    # return output_pause()
 
     @expose('addrbook.templates.about')
     def about(self):

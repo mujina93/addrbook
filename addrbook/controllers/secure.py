@@ -22,7 +22,11 @@ class SecureController(BaseController):
     def index(self):
         """Let the user know that's visiting a protected controller."""
         flash(_("Secure Controller here"))
-        return dict(page='index')
+        try:
+            username = self.username()
+        except:
+            username = ""
+        return dict(page='index', contacts=[], user="secure", total=0, partial=0)
 
     @expose('addrbook.templates.index')
     def some_where(self):

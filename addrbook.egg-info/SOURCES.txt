@@ -43,6 +43,7 @@ addrbook/templates/add.xhtml
 addrbook/templates/data.xhtml
 addrbook/templates/environ.xhtml
 addrbook/templates/error.xhtml
+addrbook/templates/export.xhtml
 addrbook/templates/index.xhtml
 addrbook/templates/login.xhtml
 addrbook/templates/master.xhtml

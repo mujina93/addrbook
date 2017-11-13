@@ -46,26 +46,40 @@ class RootController(BaseController):
     def _before(self, *args, **kw):
         tmpl_context.project_name = "addrbook"
 
+    def username(self):
+        try:
+            username = request.identity['repoze.who.userid']
+            return username
+        except TypeError:
+            raise
+
     @expose('addrbook.templates.index')
     def _default(self):
         """Handle the front-page."""
-        (contacts, partial) = self.contactlist()
-        username = ""
+        contacts = self.contactlist()
         try:
-            username = request.identity['repoze.who.userid']
+            username = self.username()
         except:
             username = ""
-        total = DBSession.query(Addressbook.id).count()
+        partial, total = self.count_contacts()
         return dict(page='index', contacts=contacts, user=username, total=total, partial=partial)
 
     def contactlist(self):
         try:
-            username = request.identity['repoze.who.userid']
+            username = self.username()
             contacts = DBSession.query(Addressbook).filter(Addressbook.users.any(user_name=username))
-            number_of_contacts = contacts.count()
-            return ([contact for contact in contacts.order_by(Addressbook.name)],number_of_contacts)
+            return [contact for contact in contacts.order_by(Addressbook.name)]
         except TypeError:
-            return ([],0)
+            return []
+
+    def count_contacts(self):
+        try:
+            username = self.username()
+            partial = DBSession.query(Addressbook).filter(Addressbook.users.any(user_name=username)).count()
+            total = DBSession.query(Addressbook.id).count()
+            return partial, total
+        except TypeError:
+            return 0, 0
 
     @expose('addrbook.templates.add')
     def add(self, default_name="", default_number=""):
@@ -82,42 +96,35 @@ class RootController(BaseController):
             redirect('/add', params=dict(default_name=name))
         else:
             try:
-                username = request.identity['repoze.who.userid']
+                username = self.username()
                 new_contact = Addressbook(name=name, number=number)
-                print("""
-                """+str(len(new_contact.users))+"""
-                """)
                 new_contact.users.append(DBSession.query(User).filter_by(user_name=username).one())
                 DBSession.add(new_contact)
-                print("""
-                """+str(len(new_contact.users))+"""
-                """)
                 flash(_('New contact added to '+username))
             except TypeError:
                 flash(_('No user logged. Login first.'), 'error')
             redirect("/")
 
+
+
     @expose()
     def deletecontact(self, name, number):
-        username = request.identity['repoze.who.userid']
+        username = self.username()
         toBeDeleted = DBSession.query(Addressbook).filter(Addressbook.users.any(user_name=username)).filter(Addressbook.name==name).filter(Addressbook.number==number)
         toBeDeleted.delete(synchronize_session='fetch')
 
         flash(_('Contact deleted'))
         redirect('/')
 
-    # @expose(content_type='application/json')
-    # def stream_db(self):
-    #     def output_pause():
-    #         num = 0
-    #         yield '['
-    #         while num < 9:
-    #             u = DBSession.query(model.User).filter_by(user_id=num).first()
-    #             num += 1
-    #             yield u and '%d, ' % u.user_id or 'null, '
-    #             time.sleep(1)
-    #         yield 'null]'
-    # return output_pause()
+    @expose('json')
+    def export(self):
+        try:
+            username = self.username()
+            contacts = self.contactlist()
+            return dict(username=username, contacts=contacts)
+        except TypeError:
+            flash(_('No user logged. Login first.'), 'error')
+            redirect('/')
 
     @expose('addrbook.templates.about')
     def about(self):

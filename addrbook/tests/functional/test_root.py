@@ -15,6 +15,9 @@ from nose.tools import ok_
 
 from addrbook.tests import TestController
 
+from addrbook.model.addressbook import Addressbook
+from addrbook.model import User
+
 
 class TestRootController(TestController):
     """Tests for the method in the root controller."""
@@ -35,6 +38,7 @@ class TestRootController(TestController):
         # links = response.html.findAll('a')
         # print(links)
         # ok_(links, "Mummy, there are no links here!")
+
     def test_environ(self):
         """Displaying the wsgi environ works"""
         response = self.app.get('/environ.html')
@@ -70,3 +74,30 @@ class TestRootController(TestController):
         """Anonymous users must not access the secure controller"""
         self.app.get('/secc', status=401)
         # It's enough to know that authorization was denied with a 401 status
+
+    def test_add(self):
+        """Adding contacts is working properly"""
+        environ = {'REMOTE_USER': 'manager'}
+        page = self.app.get('/add', extra_environ=environ, status=200)
+
+        form = page.forms['addcontact']
+        form['name'] = 'Tizio'
+        form['number'] = '300 3003003'
+        res = form.submit()
+        ok_(res.status_int == 200)
+
+    def test_contactlist(self):
+        """Retrieving all contacts works"""
+        my_contacts = self.app.get('/contactlist')
+
+    def test_deletecontact(self):
+        """Deleting contacts works"""
+        environ = {'REMOTE_USER': 'manager'}
+        page = self.app.get('/add', extra_environ=environ, status=200)
+
+        form = page.forms['addcontact']
+        form['name'] = 'Tizio'
+        form['number'] = '0000'
+        res = form.submit()
+        res = self.app.get('/deletecontact', headers={'name': 'Tizio', 'number': '0000'})
+        ok_(res.status_int == 200)

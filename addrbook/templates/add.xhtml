@@ -6,7 +6,7 @@
     <body py:block="body" py:strip="True">
       <div class="addform" style="width: 60%; background-color: #90AFC5; margin: auto; text-align: right; padding-right: 15%;">
         <h3>
-          <form action="/addcontact" method="post">
+          <form action="/addcontact" method="post" id="addcontact">
             <input type="hidden" name="redirectto" value="${tg.url('/')}" />
               <div>
                 <label for="name">Name:</label>

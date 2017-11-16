@@ -1,0 +1,37 @@
+*.py[co]
+
+# Default development database
+devdata.db
+
+# Old database
+old.db
+
+# Default data directory
+data/*
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+
+# Development logs
+log_issue*
+log_development*
+
+# Virtualenv requirements
+req*.txt
+
+# Nosetests output
+nostetests_output
+
+# Cache
+__pycache__
+

@@ -10,6 +10,9 @@ from tg.configuration import AppConfig
 import addrbook
 from addrbook import model, lib
 
+#tgapp-registration
+from tgext.pluggable import plug
+
 base_config = AppConfig()
 base_config.renderers = []
 
@@ -139,3 +142,7 @@ try:
     enable_debugbar(base_config)
 except ImportError:
     pass
+
+#tgapp-registration with tgext.mailer
+plug(base_config, 'registration')
+plug(base_config, 'tgext.mailer')

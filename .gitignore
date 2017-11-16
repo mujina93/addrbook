@@ -12,6 +12,7 @@ data/*
 # Packages
 *.egg
 *.egg-info
+*.eggs
 dist
 build
 
@@ -30,7 +31,7 @@ log_development*
 req*.txt
 
 # Nosetests output
-nostetests_output
+nosetests_output
 
 # Cache
 __pycache__

@@ -1,7 +1,0 @@
-aggiunta tabella relazione users e contatti (addressbook)
-aggiunto in bootstrap un quicstart di contatti per utenti diversi (manager e editor)
-ora la pagina principale raccoglie e mostra i contatti dell'utente corrente
-ora quando si aggiungono dei contatti, vengono aggiunti solo per l'utente corrente
-aggiunti bottoni (in templates/index.xhtml) a fianco dei contatti che chiamano una funzione javascript che apre un prompt di conferma, e nel caso di conferma invia al controller i dati (nome, numero) del campo che si desidera cancellare. La funzione crea un form con degli input che mandano i dati alla funzione deletecontact, che si occupa di cancellare i dati dal database
-aggiunto un po' di colore dal template master.xhtml
-ISSUE: ora aggiugere un contatto lo aggiunge per ogni utente! Non so perché non funzioni più.

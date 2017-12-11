@@ -2,12 +2,13 @@
 """Main Controller"""
 
 from tg import expose, flash, require, url, lurl
-from tg import request, redirect, tmpl_context
+from tg import request, validate, redirect, tmpl_context
 from tg.i18n import ugettext as _, lazy_ugettext as l_
 from tg.exceptions import HTTPFound
 from tg import predicates
 from addrbook import model
 from addrbook.controllers.secure import SecureController
+from addrbook.controllers.usercontroller import UserController
 from addrbook.model import DBSession
 from tgext.admin.tgadminconfig import BootstrapTGAdminConfig as TGAdminConfig
 from tgext.admin.controller import AdminController
@@ -20,6 +21,14 @@ from addrbook.model import User
 
 from sqlalchemy.orm.exc import *
 from sqlalchemy import func
+
+# widgets, forms
+import tw2.core as twc
+import tw2.forms as twf
+
+# authorizations
+from tg.predicates import not_anonymous
+
 
 __all__ = ['RootController']
 
@@ -43,88 +52,15 @@ class RootController(BaseController):
 
     error = ErrorController()
 
+    contactlist = UserController()
+
+
     def _before(self, *args, **kw):
         tmpl_context.project_name = "addrbook"
 
-    def username(self):
-        try:
-            username = request.identity['repoze.who.userid']
-            return username
-        except TypeError:
-            raise
-
     @expose('addrbook.templates.index')
     def _default(self):
-        """Handle the front-page."""
-        contacts = self.contactlist()
-        try:
-            username = self.username()
-        except:
-            username = ""
-        partial, total = self.count_contacts()
-        return dict(page='index', contacts=contacts, user=username, total=total, partial=partial)
-
-    def contactlist(self):
-        try:
-            username = self.username()
-            contacts = DBSession.query(Addressbook).filter(Addressbook.users.any(user_name=username))
-            return [contact for contact in contacts.order_by(Addressbook.name)]
-        except TypeError:
-            return []
-
-    def count_contacts(self):
-        try:
-            username = self.username()
-            partial = DBSession.query(Addressbook).filter(Addressbook.users.any(user_name=username)).count()
-            total = DBSession.query(Addressbook.id).count()
-            return partial, total
-        except TypeError:
-            return 0, 0
-
-    @expose('addrbook.templates.add')
-    def add(self, default_name="", default_number=""):
-        """Handle the 'add' page."""
-        return dict(page='add', default_name=default_name, default_number=default_number)
-
-    @expose()
-    def addcontact(self, redirectto, name, number, submit):
-        if name.strip()=="":
-            flash(_('Name required!'), 'error')
-            redirect('/add', params=dict(default_number=number))
-        elif number.strip()=="":
-            flash(_('Number required!'), 'error')
-            redirect('/add', params=dict(default_name=name))
-        else:
-            try:
-                username = self.username()
-                new_contact = Addressbook(name=name, number=number)
-                new_contact.users.append(DBSession.query(User).filter_by(user_name=username).one())
-                DBSession.add(new_contact)
-                flash(_('New contact added to '+username))
-            except TypeError:
-                flash(_('No user logged. Login first.'), 'error')
-            redirect("/")
-
-
-
-    @expose()
-    def deletecontact(self, name, number):
-        username = self.username()
-        toBeDeleted = DBSession.query(Addressbook).filter(Addressbook.users.any(user_name=username)).filter(Addressbook.name==name).filter(Addressbook.number==number)
-        toBeDeleted.delete(synchronize_session='fetch')
-
-        flash(_('Contact deleted'))
-        redirect('/')
-
-    @expose('json')
-    def export(self):
-        try:
-            username = self.username()
-            contacts = self.contactlist()
-            return dict(username=username, contacts=contacts)
-        except TypeError:
-            flash(_('No user logged. Login first.'), 'error')
-            redirect('/')
+        return dict()
 
     @expose('addrbook.templates.about')
     def about(self):

@@ -60,6 +60,7 @@ def bootstrap(command, conf, vars):
         # flush and commit
         model.DBSession.flush()
         transaction.commit()
+        
     except IntegrityError:
         print('Warning, there was a problem adding your auth data, '
               'it may have already been added:')

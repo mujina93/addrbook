@@ -9,6 +9,7 @@ from tg.configuration import AppConfig
 
 import addrbook
 from addrbook import model, lib
+from sqlalchemy import or_
 
 #tgapp-registration
 from tgext.pluggable import plug
@@ -65,8 +66,11 @@ class ApplicationAuthMetadata(TGAuthMetadata):
     def authenticate(self, environ, identity):
         login = identity['login']
         user = self.sa_auth.dbsession.query(self.sa_auth.user_class).filter_by(
-            user_name=login
-        ).first()
+            user_name=login).first()
+        # filter(
+        # or_(
+        # self.sa_auth.user_class.user_name==login,
+        # self.sa_auth.user_class.email_address==login)).first()
 
         if not user:
             login = None

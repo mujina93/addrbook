@@ -27,7 +27,7 @@ import tw2.core as twc
 import tw2.forms as twf
 
 # authorizations
-from tg.predicates import not_anonymous
+#from tg.predicates import not_anonymous
 
 
 __all__ = ['RootController']
@@ -102,6 +102,7 @@ class RootController(BaseController):
                 flash(_('Invalid Password'), 'error')
 
         login_counter = request.environ.get('repoze.who.logins', 0)
+
         if failure is None and login_counter > 0:
             flash(_('Wrong credentials'), 'warning')
 

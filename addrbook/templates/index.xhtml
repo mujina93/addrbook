@@ -2,29 +2,28 @@
     <head py:block="head" py:strip="True">
         <title py:block="master_title">Address book landingpage</title>
         <style type="text/css">
-        .contactslist {
+        .welcome {
           width: 60%;
           margin: auto;
           background-color: #90AFC5;
           padding: 4%;
           border-radius: 10px;
         }
-        #dbinfo {
-           background-color: #763626;
-           color: #90AFC5;
-           margin-top: 60px;
-           margin-right: 10%;
-           margin-left: 10%;
-           border-radius: 10px;
-           padding: 1%;
-        }
         </style>
     </head>
 
     <body py:block="body" py:strip="True">
-      <div class="welcome" style="width: 50%; margin: auto; text-align: center;">
-        <h1>Welcome to Addressbook. Please login to see your contacts.</h1>
+      <div class="welcome contactlist" py:if="request.identity" style="width: 50%; margin: auto; text-align: center;">
+        <h1>Welcome to Addressbook!</h1>
+        <p>You can view and manage you contacts by pressing the button below</p>
         <a href="${tg.url('/contactlist')}"><button style="margin: 5%;">Go to contacts</button></a>
+      </div>
+      <div class="welcome register" py:if="not request.identity" style="width: 50%; margin: auto; text-align: center;">
+        <h1>Welcome to Addressbook!</h1>
+        <p>Please login in order to manage your contacts.</p>
+        <a href="${tg.url('/login')}"><button style="margin: 5%;">Login</button></a>
+        <p>Or register a new account if you do have one. It's easy!</p>
+        <a href="${tg.url('/registration')}"><button style="margin: 5%;">Register an account</button></a>
       </div>
     </body>
 

@@ -36,3 +36,5 @@ nosetests_output
 # Cache
 __pycache__
 
+# Configuration file with clear password
+.development.ini

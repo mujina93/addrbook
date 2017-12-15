@@ -37,7 +37,7 @@ class AddContactForm(twf.Form):
     class child(twf.TableLayout):
         name = twf.TextField(validator=twc.Required)
         number = twf.TextField(validator=twc.Required)
-    action = '/addcontact'
+    action = '/contactlist/addcontact'
 
 class UserController(BaseController):
     """
@@ -60,9 +60,6 @@ class UserController(BaseController):
 
     allow_only = not_anonymous()
 
-    # def _before(self, *args, **kw):
-    #     tmpl_context.project_name = "addrbook"
-
     def username(self):
         try:
             username = request.identity['repoze.who.userid']
@@ -79,7 +76,7 @@ class UserController(BaseController):
         except TypeError:
             username = ""
         partial, total = self.count_contacts()
-        return dict(page='index', contacts=contacts, user=username, total=total, partial=partial)
+        return dict(page='index', contacts=contacts, user=username, partial=partial)
 
     def contactlist(self):
         try:
@@ -99,7 +96,6 @@ class UserController(BaseController):
             return 0, 0
 
     @expose('addrbook.templates.add')
-    @require(not_anonymous(msg='Only logged in users can manage their contacts'))
     def add(self):
         """Handle the 'add' page."""
         return dict(page='add', form=AddContactForm)
@@ -108,7 +104,7 @@ class UserController(BaseController):
     @expose()
     def fieldrequired_handler(self, name, number):
         flash(_('Insert both fields!'), 'error')
-        redirect('/add')
+        redirect('/contactlist/add')
 
     @expose()
     @validate(AddContactForm, error_handler=fieldrequired_handler)
@@ -121,7 +117,7 @@ class UserController(BaseController):
             flash(_('New contact added to '+username))
         except TypeError:
             flash(_('DB query failed'), 'error')
-        redirect("/")
+        redirect('/contactlist')
 
     @expose()
     def deletecontact(self, name, number):
@@ -129,17 +125,13 @@ class UserController(BaseController):
         toBeDeleted = DBSession.query(Addressbook).filter(Addressbook.users.any(user_name=username)).filter(Addressbook.name==name).filter(Addressbook.number==number)
         toBeDeleted.delete(synchronize_session='fetch')
         flash(_('Contact deleted'))
-        redirect('/')
+        redirect('/contactlist')
 
     @expose('json')
-    @require(not_anonymous(msg='Only logged in users can export contacts'))
     def export(self):
         username = self.username()
         contacts = self.contactlist()
         return dict(username=username, contacts=contacts)
-        # except TypeError:
-        #     flash(_('No user logged. Login first.'), 'error')
-        #     redirect('/')
 
     @expose('addrbook.templates.about')
     def about(self):
